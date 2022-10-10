@@ -32,6 +32,11 @@ namespace AbracaPetsDapper.Model
 
         }
 
+        public override string ToString()
+        {
+            return $"Chip: {NumChip}\nNome: {Nome}\nFamilia: {Familia}\nRaça: {Raca}\nSexo: {Sexo}";
+        }
+
         public void CadastrarAnimal()
         {
             Console.WriteLine("\n>>> CADASTRO DE ANIMAL <<<\n");
@@ -122,7 +127,7 @@ namespace AbracaPetsDapper.Model
         {
             do
             {
-                Console.Write("Digite seu CPF: ");
+                Console.Write("Digite o número do chip do animal: ");
                 try
                 {
                     NumChip = int.Parse(new TratamentoDado().TratarDado(Console.ReadLine()));
@@ -180,15 +185,15 @@ namespace AbracaPetsDapper.Model
             do
             {
                 Console.Write("Digite o sexo do Animal [M] Macho / [F] Fêmea: ");
-                Sexo = new TratamentoDado().TratarDado(Console.ReadLine());
+                Sexo = new TratamentoDado().TratarDado(Console.ReadLine()).ToUpper();
                 if (Sexo == "0")
                     return false;
-                if (Sexo != "M" && Sexo != "N" && Sexo != "F")
+                if (Sexo != "M" && Sexo != "F")
                 {
                     Console.WriteLine("Digite um opção válida!!!");
                     Thread.Sleep(2000);
                 }
-            } while (Sexo != "M" && Sexo != "N" && Sexo != "F");
+            } while (Sexo != "M" && Sexo != "F");
             return true;
         }
 

@@ -10,83 +10,70 @@ using System.Threading.Tasks;
 
 namespace AbracaPetsDapper.Repository
 {
-    internal class AnimalRepository : IAnimalRepository
+    internal class AdocaoRepository : IAdocaoRepository
     {
         private string _conexao;
 
-        public AnimalRepository()
+        public AdocaoRepository()
         {
             _conexao = ConfigurarBanco.Get();
         }
 
-        public bool Add(Animal animal)
+        public bool Add(Adocao adocao)
         {
             using (var db = new SqlConnection(_conexao))
             {
                 db.Open();
-                db.Execute(Animal.INSERT, animal);
+                db.Execute(Adocao.INSERT, adocao);
                 return true;
             }
             return false;
         }
 
-        public List<Animal> GetAll()
+        public List<Adocao> GetAll()
         {
             using (var db = new SqlConnection(_conexao))
             {
                 db.Open();
-                var animal = db.Query<Animal>(Animal.SELECT);
-                return (List<Animal>)animal;
+                var adocao = db.Query<Adocao>(Adocao.SELECT);
+                return (List<Adocao>)adocao;
             }
         }
 
-        public bool Update(Animal animal)
-        {
-            using (var db = new SqlConnection(_conexao))
-            {
-                db.Open();
-                db.Execute(Animal.UPDATE, animal);
-                return true;
-            }
-            return false;
-        }
-
-        public bool VerifChip(int chip)
+        public bool VerifAdocao(int chip)
         {
 
             using (var db = new SqlConnection(_conexao))
             {
                 db.Open();
-                var retorno = db.ExecuteScalar(Animal.SELECTCHIP + $"{chip}");
+                var retorno = db.ExecuteScalar(Adocao.SELECTCHIP + $"{chip}");
                 if (retorno != null) return true;
                 else return false;
             }
             return false;
         }
 
-        public Animal GetAnimal(int chip)
+        public Adocao GetAdocao(int chip)
         {
             using (var db = new SqlConnection(_conexao))
             {
                 db.Open();
-                var dados = db.Query<Animal>(Animal.SELECT + $" WHERE NumCHip = {chip}");
-                Animal animal = new()
+                var dados = db.Query<Adocao>(Adocao.SELECT + $" WHERE NumCHip = {chip}");
+                Adocao adocao = new()
                 {
-                    Familia = dados.First().Familia,
-                    Nome = dados.First().Nome,
-                    Raca = dados.First().Raca,
-                    Sexo = dados.First().Sexo,
-                    NumChip = dados.First().NumChip,
+                    DataAdocao = dados.First().DataAdocao,
+                    CpfAdotante = dados.First().CpfAdotante,
+                    NumChipAnimal = dados.First().NumChipAnimal,
                 };
-                return animal;
+                return adocao;
             }
         }
-        public bool Delete(Animal animal)
+        public bool Delete(Adocao adocao)
         {
             using (var db = new SqlConnection(_conexao))
             {
                 db.Open();
-                db.Execute(Animal.DELETE + animal.NumChip, animal);
+                db.Execute(Adotante.DELETE + adocao.NumChipAnimal, adocao);
                 return true;
             }
             return false;
