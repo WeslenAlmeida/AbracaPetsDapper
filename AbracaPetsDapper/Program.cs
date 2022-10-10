@@ -100,21 +100,39 @@ namespace AbracaPetsDapper
             {
                 case "1":
                     adotante.CadastraAdotante();
-                    new AdotanteService().Add(adotante);
-                    Console.WriteLine("Adotante cadastrado com sucesso!!!");
-                    Thread.Sleep(2000);
-                    Console.Clear();
-                    Menu();
-                    break;
+                    try
+                    {
+                        new AdotanteService().Add(adotante);
+                        Console.WriteLine("Adotante cadastrado com sucesso!!!");
+                        Thread.Sleep(2000);
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
+                    catch
+                    {
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
 
                 case "2":
-                    adotante.AlterarCadastro();
-                    new AdotanteService().Update(adotante);
-                    Console.WriteLine("Adotante alterado com sucesso!!!");
-                    
-                    Console.Clear();
-                    Menu();
-                    break;
+                    try
+                    {
+                        adotante.AlterarCadastro();
+                        new AdotanteService().Update(adotante);
+                        Console.WriteLine("Adotante alterado com sucesso!!!");
+
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
+                    catch
+                    {
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
 
                 case "3":
                     new AdotanteService().GetAll();
@@ -125,20 +143,29 @@ namespace AbracaPetsDapper
                     break;
 
                 case "4":
-                    if (adotante.DeletarAdotante())
+                    try
                     {
-                        new AdotanteService().Delete(adotante);
-                        Console.WriteLine("Exclusão realizada!!!");
-                        Thread.Sleep(2000);
+                        if (adotante.DeletarAdotante())
+                        {
+                            new AdotanteService().Delete(adotante);
+                            Console.WriteLine("Exclusão realizada!!!");
+                            Thread.Sleep(2000);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Exclusão Cancelada!!!");
+                            Thread.Sleep(2000);
+                        }
+                        Console.Clear();
+                        Menu();
+                        break;
                     }
-                    else
+                    catch
                     {
-                        Console.WriteLine("Exclusão Cancelada!!!");
-                        Thread.Sleep(2000);
+                        Console.Clear();
+                        Menu();
+                        break;
                     }
-                    Console.Clear();
-                    Menu();
-                    break;
 
                 case "0":
                     Environment.Exit(0);
@@ -182,21 +209,40 @@ namespace AbracaPetsDapper
             {
                 case "1":
                     animal.CadastrarAnimal();
-                    new AnimalService().Add(animal);
-                    Console.WriteLine("Animal cadastrado com sucesso!!!");
-                    Thread.Sleep(2000);
-                    Console.Clear();
-                    Menu();
-                    break;
+                    try
+                    {
+                        new AnimalService().Add(animal);
+                        Console.WriteLine("Animal cadastrado com sucesso!!!");
+                        Thread.Sleep(2000);
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
+                    catch
+                    {
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
 
                 case "2":
-                    animal.AlterarCadastro();
-                    new AnimalService().Update(animal);
-                    Console.WriteLine("Animal alterado com sucesso!!!");
+                    try
+                    {
+                        animal.AlterarCadastro();
+                        new AnimalService().Update(animal);
+                        Console.WriteLine("Animal alterado com sucesso!!!");
 
-                    Console.Clear();
-                    Menu();
-                    break;
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
+                    catch
+                    {
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
+                   
 
                 case "3":
                     new AnimalService().GetAll();
@@ -207,20 +253,30 @@ namespace AbracaPetsDapper
                     break;
 
                 case "4":
-                    if (animal.DeletarAnimal())
+                    try
                     {
-                        new AnimalService().Delete(animal);
-                        Console.WriteLine("Exclusão realizada!!!");
-                        Thread.Sleep(2000);
+                        if (animal.DeletarAnimal())
+                        {
+                            new AnimalService().Delete(animal);
+                            Console.WriteLine("Exclusão realizada!!!");
+                            Thread.Sleep(2000);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Exclusão Cancelada!!!");
+                            Thread.Sleep(2000);
+                        }
+                        Console.Clear();
+                        Menu();
+                        break;
                     }
-                    else
+                    catch
                     {
-                        Console.WriteLine("Exclusão Cancelada!!!");
-                        Thread.Sleep(2000);
+                        Console.Clear();
+                        Menu();
+                        break;
                     }
-                    Console.Clear();
-                    Menu();
-                    break;
+                 
 
                 case "0":
                     Environment.Exit(0);
@@ -262,13 +318,23 @@ namespace AbracaPetsDapper
             switch (op)
             {
                 case "1":
-                    adocao.CadastrarAdocao();
-                    new AdocaoService().Add(adocao);
-                    Console.WriteLine("Adoção cadastrada com sucesso!!!");
-                    Thread.Sleep(2000);
-                    Console.Clear();
-                    Menu();
-                    break;
+                    try
+                    {
+                        adocao.CadastrarAdocao();
+                        new AdocaoService().Add(adocao);
+                        Console.WriteLine("Adoção cadastrada com sucesso!!!");
+                        Thread.Sleep(2000);
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
+                    catch
+                    {
+                        Console.Clear();
+                        Menu();
+                        break;
+                    }
+                   
 
                 case "2":
                     new AdocaoService().GetAll();
@@ -280,20 +346,30 @@ namespace AbracaPetsDapper
                     break;
 
                 case "3":
-                    if (adocao.DeletarAdocao())
+                    try
                     {
-                        new AdocaoService().Delete(adocao);
-                        Console.WriteLine("Exclusão realizada!!!");
-                        Thread.Sleep(2000);
+                        if (adocao.DeletarAdocao())
+                        {
+                            new AdocaoService().Delete(adocao);
+                            Console.WriteLine("Exclusão realizada!!!");
+                            Thread.Sleep(2000);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Exclusão Cancelada!!!");
+                            Thread.Sleep(2000);
+                        }
+                        Console.Clear();
+                        Menu();
+                        break;
                     }
-                    else
+                    catch
                     {
-                        Console.WriteLine("Exclusão Cancelada!!!");
-                        Thread.Sleep(2000);
+                        Console.Clear();
+                        Menu();
+                        break;
                     }
-                    Console.Clear();
-                    Menu();
-                    break;
+                   
 
                 case "0":
                     Environment.Exit(0);
