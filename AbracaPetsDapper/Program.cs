@@ -135,7 +135,7 @@ namespace AbracaPetsDapper
                     }
 
                 case "3":
-                    new AdotanteService().GetAll();
+                    new AdotanteService().GetAll().ForEach(x => Console.WriteLine(x)); 
                     Console.WriteLine("Pressione Enter para continuar....");
                     Console.ReadKey();
                     Console.Clear();
@@ -245,7 +245,7 @@ namespace AbracaPetsDapper
                    
 
                 case "3":
-                    new AnimalService().GetAll();
+                    new AnimalService().GetAll().ForEach(x => Console.WriteLine(x));
                     Console.WriteLine("Pressione Enter para continuar....");
                     Console.ReadKey();
                     Console.Clear();
@@ -337,7 +337,7 @@ namespace AbracaPetsDapper
                    
 
                 case "2":
-                    new AdocaoService().GetAll();
+                    new AdocaoService().GetAll().ForEach(x => Console.WriteLine(x));
                     Console.WriteLine("Pressione Enter para continuar....");
                     Console.ReadKey();
                     Console.Clear();
