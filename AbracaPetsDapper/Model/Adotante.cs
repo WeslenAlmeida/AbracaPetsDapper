@@ -54,7 +54,7 @@ namespace AbracaPetsDapper.Model
 
         public void CadastraAdotante()
         {
-            Console.WriteLine(">>> CADASTRO DE ADOTANTE <<<\n");
+            Console.WriteLine("\n>>> CADASTRO DE ADOTANTE <<<\n");
 
             if (!CadastrarCPF()) return;
 
