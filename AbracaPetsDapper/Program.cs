@@ -10,15 +10,13 @@ namespace AbracaPetsDapper
         {
             Adotante adotante = new ();
 
-            adotante.CadastraAdotante();
+            // adotante.CadastraAdotante();
 
-            new AdotanteService().Add(adotante);
-
-            new AdotanteService().GetAll().ForEach(x => Console.WriteLine(x));
-
-            Console.WriteLine("Ufa!");
-
-            Console.Read();
-        }
+            //new AdotanteService().Add(adotante);
+            //adotante.DeletarAdotante();
+            //new AdotanteService().GetAll().ForEach(x => Console.WriteLine(x));
+            //adotante.AlterarCadastro();
+            //new AdotanteService().GetAll().ForEach(x => Console.WriteLine(x));
+        }  
     }
 }

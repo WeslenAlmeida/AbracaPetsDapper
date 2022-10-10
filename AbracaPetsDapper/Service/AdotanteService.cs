@@ -31,5 +31,20 @@ namespace AbracaPetsDapper.Service
         {
             return _adotanteRepositorio.GetAll();
         }
+
+        public bool VerifCPF(string cpf)
+        {
+            return _adotanteRepositorio.VerifCPF(cpf);
+        }
+
+        public Adotante GetAdotante(string cpf)
+        {
+            return _adotanteRepositorio.GetAdotante(cpf);
+        }
+
+        public bool Delete(Adotante adotante)
+        {
+            return _adotanteRepositorio.Delete(adotante);
+        }
     }
 }

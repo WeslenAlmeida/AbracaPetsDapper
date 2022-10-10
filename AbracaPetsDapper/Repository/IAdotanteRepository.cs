@@ -11,8 +11,13 @@ namespace AbracaPetsDapper.Repository
     {
         bool Add(Adotante adotante);
 
-        bool Update(Adotante adotante); 
+        bool Update(Adotante adotante);
+
+        public bool VerifCPF(string cpf);
 
         List<Adotante> GetAll();    
+        public Adotante GetAdotante(string cpf);
+
+        public bool Delete(Adotante adotante);
     }
 }

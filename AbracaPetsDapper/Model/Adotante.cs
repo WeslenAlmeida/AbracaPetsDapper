@@ -1,6 +1,8 @@
-﻿using System;
+﻿using AbracaPetsDapper.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,12 +13,16 @@ namespace AbracaPetsDapper.Model
     {
         #region Constantes
         public readonly static string INSERT = "INSERT INTO Adotante(CPF, Nome, DataNasc, Sexo, Telefone, Logradouro, Numero, Complemento, Bairro, Cidade, Estado, CEP)" +
-                                               $" VALUES (@CPF, @Nome, @DataNasc, @Sexo, @Telefone, @Logradouro, @Numero, @Complemento, @Bairro, @Cidade, @Estado, @Cep)";
+                                               " VALUES (@CPF, @Nome, @DataNasc, @Sexo, @Telefone, @Logradouro, @Numero, @Complemento, @Bairro, @Cidade, @Estado, @Cep)";
 
         public readonly static string SELECT = "SELECT CPF, Nome, DataNasc, Sexo, Telefone, Logradouro, Numero, Complemento, Bairro, Cidade, Estado, CEP FROM Adotante";
 
-        public readonly static string UPDATE = $"UPDATE Adotante SET CPF = @Cpf, Nome = @Nome, DataNasc = @DataNasc, Sexo = @Sexo, Telefone = @Telefone, Logradouro = @Logradouro," +
-                                               $" Numero =  @Numero, Complemento = @Complemento, Bairro = @Bairro, Cidade = @Cidade, Estado = @Estado, CEP = @Cep WHERE CPF = @Cpf";
+        public readonly static string UPDATE = "UPDATE Adotante SET CPF = @Cpf, Nome = @Nome, DataNasc = @DataNasc, Sexo = @Sexo, Telefone = @Telefone, Logradouro = @Logradouro," +
+                                               " Numero =  @Numero, Complemento = @Complemento, Bairro = @Bairro, Cidade = @Cidade, Estado = @Estado, CEP = @Cep WHERE CPF = @CPF";
+
+        public readonly static string SELECTCPF = $"SELECT CPF FROM Adotante WHERE CPF = ";
+
+        public readonly static string DELETE = $"DELETE FROM Adotante WHERE CPF = ";
         #endregion
 
         #region Propriedades
@@ -75,6 +81,140 @@ namespace AbracaPetsDapper.Model
             if (!CadastrarCEP()) return;
         }
 
+        public void AlterarCadastro()
+        {
+            int op;
+            Console.WriteLine("\n>>> ALTERAR CADASTRO DE ADOTANTE <<<\n");
+
+            if (!VerificarCPF()) return;
+
+            Console.WriteLine("[1] Alterar Nome\n[2] Alterar Data de Nascimento\n[3] Alterar Sexo\n[4] Alterar Telefone\n[5] Alterar Logradouro" +
+                "\n[6] Alterar Número Residencial\n[7] Complemento\n[8] Alterar Bairro\n[9] Alterar Cidade\n[10] Alterar Estado\n[11] Alterar CEP\n[0] Sair");
+            do
+            {
+                try { op = int.Parse(Console.ReadLine());}
+                catch { Console.WriteLine("Dado inválido!!!"); op = -1; }   
+                
+            } while (op < 0 && op > 11);
+
+            Adotante adotante = new AdotanteService().GetAdotante(CPF);
+
+            switch (op)
+            {
+                case 0:
+                    return;
+
+                case 1:
+                    if (!CadastrarNome()) return;
+                    adotante.Nome = this.Nome;
+                    break;
+
+                case 2:
+                    if (!CadastrarDataNasc()) return;
+                    adotante.DataNasc = this.DataNasc;
+                    break;
+
+                case 3:
+                    if (!CadastrarSexo()) return;
+                    adotante.Sexo = this.Sexo;
+                    break;
+
+                case 4:
+                    if (!CadastrarTelefone()) return;
+                    adotante.Telefone = this.Telefone;
+                    break;
+
+                case 5:
+                    if (!CadastrarLogradouro()) return;
+                    adotante.Logradouro = this.Logradouro;  
+                    break;
+
+                case 6:
+                    if (!CadastrarNumResidencia()) return;
+                    adotante.Numero = this.Numero;  
+                    break;
+
+                case 7:
+                    if (!CadastrarComplemento()) return;
+                    adotante.Complemento = this.Complemento;    
+                    break;
+
+                case 8:
+                    if (!CadastrarBairro()) return;
+                    adotante.Bairro = this.Bairro;  
+                    break;
+
+                case 9:
+                    if (!CadastrarCidade()) return;
+                    adotante.Cidade = this.Cidade;  
+                    break;
+
+                case 10:
+                    if (!CadastrarEstado()) return;
+                    adotante.Estado = this.Estado;  
+                    break;
+
+                case 11:
+                    if (!CadastrarCEP()) return;
+                    adotante.Cep = this.Cep;    
+                    break;
+            }
+            new AdotanteService().Update(adotante);
+        }
+
+        public void DeletarAdotante()
+        {
+            string op;
+            Console.WriteLine("\n>>> DELETAR ADOTANTE <<<\n");
+
+            if(!VerificarCPF()) return;
+
+            Adotante adotante = new AdotanteService().GetAdotante(CPF);
+
+            Console.WriteLine(adotante.ToString());
+
+            while (true)
+            {
+                Console.Write("\nConfirma deletar adotante?\n[S] Sim\n[N] Não\nOpção:  ");
+                op = Console.ReadLine().ToUpper();
+
+                if (op == "0") return;
+                else if (op != "S" && op != "N") Console.WriteLine("Dado inválido");
+                else break;
+            }
+
+            if(op == "S") new AdotanteService().Delete(adotante);
+            else return;
+        }
+
+        private bool VerificarCPF()
+        {
+            do
+            {
+                Console.Write("Digite seu CPF: ");
+                CPF = new TratamentoDado().TratarDado(Console.ReadLine());
+                if (CPF == "0")
+                    return false;
+                if (!ValidaCPF(CPF))
+                {
+                    Console.WriteLine("Digite um CPF Válido!");
+                    Thread.Sleep(2000);
+                }
+                else
+                {
+                    bool verifica = new AdotanteService().VerifCPF(CPF);
+                    if (!verifica)
+                    {
+                        Console.WriteLine("CPF não cadastrado!!!");
+                        Thread.Sleep(2000);
+                        CPF = "";
+                    }
+                }
+
+            } while (!ValidaCPF(CPF) || CPF == "");
+            return true;
+        }
+
         private bool CadastrarCPF()
         {
             do
@@ -88,16 +228,19 @@ namespace AbracaPetsDapper.Model
                     Console.WriteLine("Digite um CPF Válido!");
                     Thread.Sleep(2000);
                 }
+                else
+                {
 
-                //bool verifica = db.VerifCpfExistente(Cpf, "CPF", "Adotante");
-                //if (verifica)
-                //{
-                //    Console.WriteLine("CPF Já cadastrado!!!");
-                //    Thread.Sleep(2000);
-                //    Cpf = "";
-                //}
+                    bool verifica = new AdotanteService().VerifCPF(CPF);
+                    if (verifica)
+                    {
+                        Console.WriteLine("CPF Já cadastrado!!!");
+                        Thread.Sleep(2000);
+                        CPF = "";
+                    }
+                }
 
-            } while (!ValidaCPF(CPF));
+            } while (!ValidaCPF(CPF) || CPF == "");
             return true;
         }
 
@@ -275,7 +418,6 @@ namespace AbracaPetsDapper.Model
             return true;
         }
 
-        //Método Para Validar o CPF 
         private static bool ValidaCPF(string vrCPF)
         {
             string valor = vrCPF.Replace(".", "");

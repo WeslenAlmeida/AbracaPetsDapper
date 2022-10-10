@@ -50,5 +50,54 @@ namespace AbracaPetsDapper.Repository
             }
             return false;
         }
+
+        public bool VerifCPF(string cpf)
+        {
+            
+            using (var db = new SqlConnection(_conexao))
+            {
+                db.Open();
+                var retorno = db.ExecuteScalar(Adotante.SELECTCPF + cpf);
+                if (retorno != null) return true;
+                else return false;
+            }
+            return false;
+        }
+
+        public Adotante GetAdotante(string cpf)
+        {
+            using (var db = new SqlConnection(_conexao))
+            {
+                db.Open();
+                var dados = db.Query <Adotante>(Adotante.SELECT + $" WHERE CPF = {cpf}");
+                Adotante adotante = new()
+                {
+                    CPF = dados.First().CPF,
+                    Nome = dados.First().Nome,
+                    DataNasc = dados.First().DataNasc,  
+                    Sexo = dados.First().Sexo,  
+                    Telefone = dados.First().Telefone,
+                    Logradouro = dados.First().Logradouro,
+                    Numero = dados.First().Numero,
+                    Complemento = dados.First().Complemento,
+                    Bairro = dados.First().Bairro,  
+                    Cidade = dados.First().Cidade,
+                    Estado = dados.First().Estado,
+                    Cep = dados.First().Cep,
+                };
+                return adotante;
+            }
+        }
+        public bool Delete(Adotante adotante)
+        {
+            using (var db = new SqlConnection(_conexao))
+            {
+                db.Open();
+                db.Execute(Adotante.DELETE + adotante.CPF, adotante);
+                return true;
+            }
+            return false;
+        }
+
     }
 }
