@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace AbracaPetsDapper.Model
 {
+   
     internal class Adocao
     {
+        #region Constantes
         public readonly static string INSERT = "INSERT INTO Adocao(FK_Animal_NumChip, FK_Adotante_CPF) VALUES (@NumChipAnimal, @CpfAdotante)";
 
         public readonly static string SELECT = "SELECT DataAdocao, FK_Animal_NumChip, FK_Adotante_CPF FROM Adocao";
@@ -17,11 +19,15 @@ namespace AbracaPetsDapper.Model
         public readonly static string SELECTCHIP = $"SELECT FK_Animal_NumChip FROM Adocao WHERE FK_Animal_NumChip = ";
 
         public readonly static string DELETE = $"DELETE FROM Adocao WHERE FK_Animal_NumChip = ";
+        #endregion
 
+        #region Propriedades
         public string CpfAdotante { get; set; }
         public string NumChipAnimal { get; set; }
-        public DateTime DataAdocao { get; set; }  
+        public DateTime DataAdocao { get; set; }
+        #endregion
 
+        #region Metodos
         public Adocao()
         {
 
@@ -65,7 +71,7 @@ namespace AbracaPetsDapper.Model
             NumChipAnimal = chip.ToString();
         }
 
-        public void DeletarAdocao()
+        public bool DeletarAdocao()
         {
             int chip;
             string op;
@@ -75,7 +81,7 @@ namespace AbracaPetsDapper.Model
                 Console.Write("Digite o Chip do animal: ");
                 try { chip = int.Parse(Console.ReadLine()); } catch { Console.WriteLine("Dado inválido!"); chip = -1; };
 
-                if (chip == 0) return;
+                if (chip == 0) return false;
 
                 if (!new AdocaoService().VerifAdocao(chip))
                 {
@@ -93,13 +99,17 @@ namespace AbracaPetsDapper.Model
                 Console.Write("\nConfirma deletar adoção?\n[S] Sim\n[N] Não\nOpção:  ");
                 op = Console.ReadLine().ToUpper();
 
-                if (op == "0") return;
+                if (op == "0") return false;
                 else if (op != "S" && op != "N") Console.WriteLine("Dado inválido");
                 else break;
             }
 
-            if (op == "S") new AdocaoService().Delete(adocao);
-            else return;
+            if (op == "S") 
+            {
+                return true;
+            } 
+            else return false;
         }
+        #endregion
     }
 }

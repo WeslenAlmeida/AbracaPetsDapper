@@ -159,15 +159,15 @@ namespace AbracaPetsDapper.Model
                     adotante.Cep = this.Cep;    
                     break;
             }
-            new AdotanteService().Update(adotante);
+            
         }
 
-        public void DeletarAdotante()
+        public bool DeletarAdotante()
         {
             string op;
             Console.WriteLine("\n>>> DELETAR ADOTANTE <<<\n");
 
-            if(!VerificarCPF()) return;
+            if(!VerificarCPF()) return false;
 
             Adotante adotante = new AdotanteService().GetAdotante(CPF);
 
@@ -178,13 +178,13 @@ namespace AbracaPetsDapper.Model
                 Console.Write("\nConfirma deletar adotante?\n[S] Sim\n[N] Não\nOpção:  ");
                 op = Console.ReadLine().ToUpper();
 
-                if (op == "0") return;
+                if (op == "0") return false;
                 else if (op != "S" && op != "N") Console.WriteLine("Dado inválido");
                 else break;
             }
 
-            if(op == "S") new AdotanteService().Delete(adotante);
-            else return;
+            if(op == "S") return true;
+            else return false;
         }
 
         private bool VerificarCPF()

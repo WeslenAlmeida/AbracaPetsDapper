@@ -10,6 +10,7 @@ namespace AbracaPetsDapper.Model
 {
     internal class Animal
     {
+        #region Constantes
         public readonly static string INSERT = "INSERT INTO Animal(Nome, Raca, Familia, Sexo) VALUES (@Nome, @Raca, @Familia, @Sexo)";
 
         public readonly static string SELECT = "SELECT NumChip, Nome, Raca, Familia, Sexo FROM Animal";
@@ -19,14 +20,17 @@ namespace AbracaPetsDapper.Model
         public readonly static string SELECTCHIP = $"SELECT NumChip FROM Animal WHERE NumChip = ";
 
         public readonly static string DELETE = $"DELETE FROM Animal WHERE NumChip = ";
+        #endregion
 
-
+        #region Propriedades
         public int NumChip { get; set; }    
         public string Familia { get; set; }
         public string Raca { get; set; }
         public string Sexo { get; set; }
         public string Nome { get; set; }
+        #endregion
 
+        #region Metodos
         public Animal()
         {
 
@@ -98,12 +102,12 @@ namespace AbracaPetsDapper.Model
             new AnimalService().Update(animal);
         }
 
-        public void DeletarAnimal()
+        public bool DeletarAnimal()
         {
             string op;
             Console.WriteLine("\n>>> DELETAR ANIMAL <<<\n");
 
-            if (!VerificarChip()) return;
+            if (!VerificarChip()) return false;
 
             Animal animal = new AnimalService().GetAnimal(NumChip);
 
@@ -114,13 +118,16 @@ namespace AbracaPetsDapper.Model
                 Console.Write("\nConfirma deletar animal?\n[S] Sim\n[N] Não\nOpção:  ");
                 op = Console.ReadLine().ToUpper();
 
-                if (op == "0") return;
+                if (op == "0") return false;
                 else if (op != "S" && op != "N") Console.WriteLine("Dado inválido");
                 else break;
             }
 
-            if (op == "S") new AnimalService().Delete(animal);
-            else return;
+            if (op == "S") 
+            {
+                return true;
+            } 
+            else return false;
         }
 
         private bool VerificarChip()
@@ -206,7 +213,7 @@ namespace AbracaPetsDapper.Model
             Nome = new TratamentoDado().TratarDado(Console.ReadLine());
             return true;
         }
-
+        #endregion
     }
 }
 
